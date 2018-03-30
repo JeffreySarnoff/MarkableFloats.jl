@@ -3,6 +3,9 @@ abstract type MarkableFloat <: AbstractFloat end
 
 primitive type MarkFloat64 <: MarkableFloat 64 end
 
+
+
+
 #=
 fr,ex=frexp(realmax(Float64)); ldexp(fr, ex>>1)
 1.3407807929942596e154
@@ -19,6 +22,15 @@ markable(x::Float64) = 7.458340731200207e-155 <= x <= 1.3407807929942596e154
    !markable(x) && throw(DomainError("$x"))
    true
 end
+
+Base.UInt64(x::MarkFloat64) = Base.reinterpret(UInt64, x)
+Base.UInt64(x::Float64) = Base.reinterpret(UInt64, x)
+Base.Float64(x::MarkFloat64) = Base.reinterpret(Float64, (0xefffffffffffffff & UInt64(x)))
+MarkFloat64(x::UInt64) = Base.reinterpret(MarkFloat64, x)
+MarkFloat64(x::Float64) = markable(x) ? Base.reinterpret(Float64, UInt64(x)) : throw(DomainError("$x"))
+MarkFloat64(x::UInt64, marking::UInt64) = MarkFloat64(x | marking)
+MarkFloat64(x::Float64, marking::UInt64) = MarkFloat64(UInt64(x) | marking)
+
 
 Unmarked(x::Float64) = markable(x) && reinterpret(MarkFloat64, x)
 Marked(x::Float64) = markable(x) && mark(reinterpret(MarkFloat64, x))
