@@ -45,7 +45,7 @@ Marked(x::Float64) = markable(x) && mark(reinterpret(MarkFloat64, x))
 
 function string(x::MarkFloat64)
    x = unmark(x)
-   z = reinterpret(Float64,x)
+   z = reinterpret(Float64, reinterpret(UInt64,x))
    return string(z)
 end
 show(io::IO, x::MarkFloat64) = print(io, string(x))
