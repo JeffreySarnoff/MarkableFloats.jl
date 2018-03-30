@@ -1,4 +1,6 @@
-struct MarkFloat64 <: AbstractFloat end
+abstract type MarkableFloat <: AbstractFloat end
+
+primitive type MarkFloat64 <: MarkableFloat 64 end
 
 #=
 fr,ex=frexp(realmax(Float64)); ldexp(fr, ex>>1)
