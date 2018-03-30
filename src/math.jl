@@ -1,10 +1,11 @@
 for F in (:(+), :(-), :(*), :(/), :(\), :(^))
   @eval begin
     function $F(a::MarkFloat64, b::MarkFloat64)
-        marking = marker(a) | marker(b)
-        c = reinterpret(UInt64, $F(Float64(a), Float64(b)))
-        c |= marking
-        z = reinterpret(MarkFloat64, c)
+        c = $F(Float64(a), Float64(b))
+        d = reinterpret(UInt64, c) 
+        d |= marker(a)
+        d |= marker(b)
+        z = reinterpret(MarkFloat64, d)
         return z
     end
   end
