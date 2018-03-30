@@ -1,3 +1,5 @@
+struct MarkFloat64 <: AbstractFloat end
+
 #=
 fr,ex=frexp(realmax(Float64)); ldexp(fr, ex>>1)
 1.3407807929942596e154
