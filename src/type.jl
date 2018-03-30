@@ -23,8 +23,13 @@ end
 Unmarked(x::Float64) = markable(x) && reinterpret(MarkFloat64, x)
 Marked(x::Float64) = markable(x) && mark(reinterpret(MarkFloat64, x))
 
-@inline Float64(x::MarkFloat64) = reinterpret(Float64, unmark(x))
-@inline MarkFloat64(x::Float64) = Unmarked(x)
+@inline Float64(x::MarkFloat64) = reinterpret(Float64, unmark_raw(x))
+@inline MarkFloat64(x::Float64) = ismarkable(x) && reinterpret(MarkFloat64, reinterpret(UInt64, x))
+
+@inline unmark_raw(x::MarkFloat64) =
+    reinterpret(UInt64,x) & 0xefffffffffffffff
+@inline mark_raw(x::MarkFloat64) =
+    reinterpret(UInt64,x) | 0x1000000000000000
 
 @inline unmark(x::MarkFloat64) =
     reinterpret(MarkFloat64, (reinterpret(UInt64,x) & 0xefffffffffffffff))
