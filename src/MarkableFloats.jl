@@ -3,7 +3,7 @@ module MarkableFloats
 export MarkableFloat, MarkableFloat64,
     square, cube
 
-import Base: AbstractFloat, Float64, float,
+import Base: AbstractFloat, Float64, float
 
 import Base: @pure, promote_type, promote_rule, convert,
     mark, unmark, ismarked,
