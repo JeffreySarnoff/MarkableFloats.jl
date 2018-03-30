@@ -1,4 +1,4 @@
-module MarkableFloats.jl
+module MarkableFloats
 
 export MarkableFloat, MarkableFloat64,
     square, cube
