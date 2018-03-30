@@ -20,8 +20,8 @@ markable(x::Float64) = 7.458340731200207e-155 <= x <= 1.3407807929942596e154
    true
 end
 
-@inline unmarkraw(x::MarkFloat64) = reinterpret(UInt64,x) & 0xefffffffffffffff)
-@inline markraw(x::MarkFloat64)   = reinterpret(UInt64,x) | 0x1000000000000000)
+@inline unmarkraw(x::MarkFloat64) = reinterpret(UInt64,x) & 0xefffffffffffffff
+@inline markraw(x::MarkFloat64)   = reinterpret(UInt64,x) | 0x1000000000000000
 
 @inline unmark(x::MarkFloat64) = reinterpret(MarkFloat64, unmarkraw(x))
 @inline mark(x::MarkFloat64) =   reinterpret(MarkFloat64, markraw(x))
