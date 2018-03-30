@@ -26,5 +26,6 @@ import Base.Math: zero, one, iszero, isone, isinteger,
     asinh, acosh, atanh, asech, acsch, acoth
 
 include("type.jl")
+include("math.jl")
 
 end # MarkableFloats
