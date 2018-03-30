@@ -18,9 +18,10 @@ for F in (:(-), :abs, :log, :log2, :log10, :log1p, :exp, :expm1,
           :asinh, :acosh, :atanh, :asech, :acsch, :acoth)                   
   @eval begin
     function $F(a::MarkFloat64)
-        c = reinterpret(UInt64, $F(Float64(a)))
-        c |= marker(a)
-        z = reinterpret(MarkFloat64, c)
+        c = $F(Float64(a))
+        d = reinterpret(UInt64, c)
+        d |= marker(a)
+        z = reinterpret(MarkFloat64, d)
         return z
     end
   end
