@@ -1,6 +1,6 @@
 module MarkableFloats
 
-export MarkableFloat, MarkableFloat64,
+export MarkableFloat, MarkFloat64,
     square, cube
 
 import Base: AbstractFloat, Float64, float
