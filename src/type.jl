@@ -38,5 +38,9 @@ Marked(x::Float64) = markable(x) && mark(reinterpret(MarkFloat64, x))
 
 @inline marker(x::MarkFloat64) = (reinterpret(UInt64,x) & 0x1000000000000000)
 
-string(x::MarkFloat64) = string(Float64(x))
+function string(x::MarkFloat64)
+   x = unmark(x)
+   z = reinterpret(Float64,x)
+   return string(z)
+end
 show(io::IO, x::MarkFloat64) = print(io, string(x))
