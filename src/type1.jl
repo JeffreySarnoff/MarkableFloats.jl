@@ -29,5 +29,8 @@ marking(x::MarkableFloat32{0}) = nothing
 marking(x::MarkableFloat64{M}) = M
 marking(x::MarkableFloat32{M}) = M
 
+Markable64s = Union{MarkableFloat64{0}, MarkableFloat64{1}, MarkableFloat64{2}}
+Markable32s = Union{MarkableFloat32{0}, MarkableFloat32{1}, MarkableFloat32{2}}
+
 
 
