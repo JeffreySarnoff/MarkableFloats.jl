@@ -3,8 +3,12 @@ module MarkableFloats
 export MarkableFloat, MarkFloat64, Marked, Unmarked, mark, unmark,
     square, cube
 
-import Base: AbstractFloat, Float64, float
+import Base: AbstractFloat, Float64, Float32, Float16
 
+import Base.Checked: add_with_overflow, sub_with_overflow, mul_with_overflow
+                     # checked_neg, checked_abs, checked_add, checked_sub, checked_mul,
+                     # checked_div, checked_rem, checked_fld, checked_mod, checked_cld,
+                     
 import Base: @pure, promote_type, promote_rule, convert,
     mark, unmark, ismarked,
     typemax, typemin, realmax, realmin,
