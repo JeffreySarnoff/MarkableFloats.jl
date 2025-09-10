@@ -7,11 +7,11 @@ abstract type RemarkableFloat64 <: RemarkableFloat end
 primitive type Float14 <: RemarkableFloat16 16 end
 primitive type Float15 <: RemarkableFloat16 16 end
 
-primitive type Float30 32 <: RemarkableFloat32 end
-primitive type Float31 32 <: RemarkableFloat32 end
+primitive type Float30 <: RemarkableFloat32 32 end
+primitive type Float31 <: RemarkableFloat32 32 end
 
-primitive type Float62 64 <: RemarkableFloat64 end
-primitive type Float63 64 <: RemarkableFloat64 end
+primitive type Float62 <: RemarkableFloat64 64 end
+primitive type Float63 <: RemarkableFloat64 64 end
 
 const NaN14    = reinterpret(Float14, NaN16)
 const PosInf14 = reinterpret(Float14, Inf16)
