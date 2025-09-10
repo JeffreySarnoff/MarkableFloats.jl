@@ -57,6 +57,7 @@ const Mark2 = 0x02
 const Mark3 = 0x03
 
 
+#  ◒, ◐, ◑, ◓
 const Marker0 = "" # '₀' 
 const Marker1 = '₁'
 const Marker2 = '₂'
