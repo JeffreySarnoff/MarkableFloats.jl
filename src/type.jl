@@ -13,7 +13,7 @@ primitive type Float31 32 <: RemarkableFloat32 end
 primitive type Float62 64 <: RemarkableFloat64 end
 primitive type Float63 64 <: RemarkableFloat64 end
 
-const NaN14 = reinterpret(Float14, NaN16)
+const NaN14    = reinterpret(Float14, NaN16)
 const PosInf14 = reinterpret(Float14, Inf16)
 const NegInf14 = reinterpret(Float14, -Inf16)
 
@@ -25,6 +25,36 @@ function Float14(x::Float16)
     reinterpret(Float14, uint14y)
 end
 
+function Base.Float16(x::Float14)
+    uint16x = reinterpret(UInt16, x)
+    uint14y = uint16x & ~0x0003
+    reinterpret(Float16, uint14y)
+end
+
+Base.show(io::IO, x::Float14) = show(io, MIME"text/plain"(), string("Float14(",reinterpret(Float16,x),")"))
+Base.show(io::IO, mimme, x::Float14) = show(io, mime(), string("Float14(",reinterpret(Float16,x),")"))
+
+const NaN15    = reinterpret(Float15, NaN16)
+const PosInf15 = reinterpret(Float15, Inf16)
+const NegInf15 = reinterpret(Float15, -Inf16)
+
+function Float15(x::Float16)
+    uint16x = reinterpret(UInt16, x)
+    uint16y, ovf = add_with_overflow(uint16x, 0x0001)
+    uint14y = (uint16y & ~0x0001)
+    ovf && return ((uint16y & 0x8000) === 0x8000) ? PosInf15 : NegInf15
+    reinterpret(Float15, uint14y)
+end
+
+function Base.Float16(x::Float15)
+    uint16x = reinterpret(UInt16, x)
+    uint15y = uint16x & ~0x0001
+    reinterpret(Float16, uint15y)
+end
+
+Base.show(io::IO, x::Float15) = show(io, MIME"text/plain"(), string("Float15(",reinterpret(Float16,x),")")) 
+
+    
 #=
 function Float14(x::Float16)
    uint16x = reinterpret(UInt16, x)
