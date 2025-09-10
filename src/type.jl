@@ -53,29 +53,38 @@ end
 
 Base.show(io::IO, x::Float15) = show(io, MIME"text/plain"(), string("Float15(",reinterpret(Float16,x),")")) 
 
-    
+const Mark0 = 0x00
+const Mark1 = 0x01
+const Mark2 = 0x02
+const Mark3 = 0x03
+
+is_marked(x::Float14)   = (reinterpret(UInt16, x) & 0x0003) !== 0x0000
+is_unmarked(x::Float14) = (reinterpret(UInt16, x) & 0x0003) === 0x0000
+
+unmark(x::Float14)      = reinterpret(Float14, (reinterpret(UInt16, x) & ~0x0003))
+
+is_marked(x::Float14)  = (reinterpret(UInt16, x) & 0x0003) !== 0x0000
+
+is_marked1(x::Float14)  = (reinterpret(UInt16, x) & 0x0003) === 0x0001
+is_marked2(x::Float14)  = (reinterpret(UInt16, x) & 0x0003) === 0x0002
+is_marked3(x::Float14)  = (reinterpret(UInt16, x) & 0x0003) === 0x0003
+
+has_mark1(x::Float14)   = (reinterpret(UInt16, x) & 0x0001) === 0x0001
+has_mark2(x::Float14)   = (reinterpret(UInt16, x) & 0x0002) === 0x0002
+has_mark3(x::Float14)   = (reinterpret(UInt16, x) & 0x0003) === 0x0003
+
+marked1(x::Float14)    = reinterpret(Float14, (reinterpret(UInt16, unmark(x)) | 0x0001))
+marked2(x::Float14)    = reinterpret(Float14, (reinterpret(UInt16, unmark(x)) | 0x0002))
+marked3(x::Float14)    = reinterpret(Float14, (reinterpret(UInt16, unmark(x)) | 0x0003))
+
+with_mark1(x::Float14) = reinterpret(Float14, (reinterpret(UInt16, x) | 0x0001))
+with_mark2(x::Float14) = reinterpret(Float14, (reinterpret(UInt16, x) | 0x0002))
+with_mark3(x::Float14) = reinterpret(Float14, (reinterpret(UInt16, x) | 0x0003))
+
+is_marked_even(x::Float14) =  is_marked(x) && ((reinterpret(UInt16, x) & 0x0001) === 0x0000)
+is_marked_odd(x::Float14)  =  is_marked(x) && ((reinterpret(UInt16, x) & 0x0001) === 0x0001)
+
 #=
-function Float14(x::Float16)
-   uint16x = reinterpret(UInt16, x)
-   uint16y, ovf = add_with_overflow(uint16x, 0x0002)
-   ovf && return signbit(x) ? NegInf14 : PosInf14
-   uint14y = uint16y & ~0x0003
-   reinterpret(Float14, uint14y)
-end
-=#
-
-function Base.Float16(x::Float14)
-   reinterpret(Float16, x)
-end
-
-
-Float14(x::Float15) = reinterpret(Float15, x)
-
-Base.show(io::IO, x::Float14) = show(io, MIME"text/plain"(), string("Float14(",reinterpret(Float16,x),")"))
-
-Base.reinterpret(::Type{Float16}, x::Float14) = reinterpret(Float16, convert(UInt16, x))
-Base.convert(::Type{UInt16}, x::Float14) = reinterpret(UInt16, x)
-
 struct MarkableFloat64{M} <: MarkableFloat
    value::Float64
 end
@@ -107,6 +116,6 @@ marking(x::MarkableFloat32{M}) = M
 
 Markable64s = Union{MarkableFloat64{0}, MarkableFloat64{1}, MarkableFloat64{2}}
 Markable32s = Union{MarkableFloat32{0}, MarkableFloat32{1}, MarkableFloat32{2}}
-
+=#
 
 
