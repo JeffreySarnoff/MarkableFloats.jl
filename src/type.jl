@@ -31,8 +31,6 @@ function Base.Float16(x::Float14)
     reinterpret(Float16, uint14y)
 end
 
-Base.show(io::IO, x::Float14) = show(io, MIME"text/plain"(), string("Float14(",reinterpret(Float16,x),")"))
-
 const NaN15    = reinterpret(Float15, NaN16)
 const PosInf15 = reinterpret(Float15, Inf16)
 const NegInf15 = reinterpret(Float15, -Inf16)
@@ -51,7 +49,7 @@ function Base.Float16(x::Float15)
     reinterpret(Float16, uint15y)
 end
 
-Base.show(io::IO, x::Float15) = show(io, MIME"text/plain"(), string("Float15(",reinterpret(Float16,x),")")) 
+# marking
 
 const Mark0 = 0x00
 const Mark1 = 0x01
@@ -64,8 +62,9 @@ is_marked(x::Float14)   = (reinterpret(UInt16, x) & 0x0003) !== 0x0000
 is_unmarked(x::Float14) = (reinterpret(UInt16, x) & 0x0003) === 0x0000
 
 unmark(x::Float14)      = reinterpret(Float14, (reinterpret(UInt16, x) & ~0x0003))
+marking(x::Float14)     = (reinterpret(UInt16, x) & 0x0003) % UInt8
 
-is_marked(x::Float14)  = (reinterpret(UInt16, x) & 0x0003) !== 0x0000
+is_marked(x::Float14)   = (reinterpret(UInt16, x) & 0x0003) !== 0x0000
 
 is_marked1(x::Float14)  = (reinterpret(UInt16, x) & 0x0003) === 0x0001
 is_marked2(x::Float14)  = (reinterpret(UInt16, x) & 0x0003) === 0x0002
@@ -92,6 +91,7 @@ is_marked(x::Float15)   = (reinterpret(UInt16, x) & 0x0001) === 0x0001
 is_unmarked(x::Float15) = (reinterpret(UInt16, x) & 0x0001) === 0x0000
 
 unmark(x::Float15)      = reinterpret(Float15, (reinterpret(UInt16, x) & ~0x0001))
+marking(x::Float15)     = (reinterpret(UInt16, x) & 0x0001) % UInt8
 
 is_marked(x::Float15)  = (reinterpret(UInt16, x) & 0x0001) !== 0x0000
 
@@ -102,6 +102,22 @@ has_mark1(x::Float15)   = (reinterpret(UInt16, x) & 0x0001) === 0x0001
 marked1(x::Float15)    = reinterpret(Float15, (reinterpret(UInt16, unmark(x)) | 0x0001))
 
 with_mark1(x::Float14) = reinterpret(Float15, (reinterpret(UInt16, x) | 0x0001))
+
+# show (value, marking)
+
+function Base.show(io::IO, x::Float14)
+    mark = marking(x)
+    value = Float16(unmark(x))
+    str = string("Float14(", value, "~", mark,")")
+    print(io, MIME"text/plain"(), str)
+end
+
+function Base.show(io::IO, x::Float15)
+    mark = marking(x)
+    value = Float16(unmark(x))
+    str = string("Float15(", value, "~", mark,")")
+    print(io, MIME"text/plain"(), str)
+end
 
 
 #=
