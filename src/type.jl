@@ -56,7 +56,7 @@ const Mark1 = 0x01
 const Mark2 = 0x02
 const Mark3 = 0x03
 
-const Marker0 = ' ' # '₀' 
+const Marker0 = "" # '₀' 
 const Marker1 = '₁' 
 const Marker2 = '₂'
 const Marker3 = '₃'
