@@ -19,7 +19,7 @@ const NegInf14 = reinterpret(Float14, -Inf16)
 
 function Float14(x::Float16)
     uint16x = reinterpret(UInt16, x)
-    uint16y, ovf = add_with_overflow(uint16x, 0x0002)
+    uint16y, ovf = Base.add_with_overflow(uint16x, 0x0002)
     uint14y = (uint16y & ~0x0003)
     ovf && return ((uint16y & 0x8000) === 0x8000) ? PosInf14 : NegInf14
     reinterpret(Float14, uint14y)
@@ -37,7 +37,7 @@ const NegInf15 = reinterpret(Float15, -Inf16)
 
 function Float15(x::Float16)
     uint16x = reinterpret(UInt16, x)
-    uint16y, ovf = add_with_overflow(uint16x, 0x0001)
+    uint16y, ovf = Base.add_with_overflow(uint16x, 0x0001)
     uint14y = (uint16y & ~0x0001)
     ovf && return ((uint16y & 0x8000) === 0x8000) ? PosInf15 : NegInf15
     reinterpret(Float15, uint14y)
