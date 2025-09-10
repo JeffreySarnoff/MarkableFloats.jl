@@ -56,7 +56,7 @@ const Mark1 = 0x01
 const Mark2 = 0x02
 const Mark3 = 0x03
 
-const Marker0 = '₀' 
+const Marker0 = ' ' # '₀' 
 const Marker1 = '₁' 
 const Marker2 = '₂'
 const Marker3 = '₃'
@@ -117,14 +117,14 @@ with_mark1(x::Float14) = reinterpret(Float15, (reinterpret(UInt16, x) | 0x0001))
 function Base.show(io::IO, x::Float14)
     mark = marker(marking(x))
     value = Float16(unmark(x))
-    str = string("Float14(", value, ", ", mark,")")
+    str = string(mark, "Float14(", value, ")")
     print(io, str)
 end
 
 function Base.show(io::IO, x::Float15)
     mark = marker(marking(x))
     value = Float16(unmark(x))
-    str = string("Float15(", value, ", ", mark,")")
+    str = string(mark, "Float15(", value, ")")
     print(io, str)
 end
 
