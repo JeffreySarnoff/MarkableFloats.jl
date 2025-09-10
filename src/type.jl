@@ -13,13 +13,27 @@ primitive type Float31 32 <: RemarkableFloat32 end
 primitive type Float62 64 <: RemarkableFloat64 end
 primitive type Float63 64 <: RemarkableFloat64 end
 
+const NaN14 = reinterpret(Float14, NaN16)
+const PosInf14 = reinterpret(Float14, Inf16)
+const NegInf14 = reinterpret(Float14, -Inf16)
+
+function Float14(x::Float16)
+    uint16x = reinterpret(UInt16, x)
+    uint16y, ovf = add_with_overflow(uint16x, 0x0002)
+    uint14y = (uint16y & ~0x0003)
+    ovf && return ((uint16y & 0x8000) === 0x8000) ? PosInf14 : NegInf14
+    reinterpret(Float14, uint14y)
+end
+
+#=
 function Float14(x::Float16)
    uint16x = reinterpret(UInt16, x)
-   uint16y = uint16 + 0x0002
-   
-   uint14 = ((uint16 + 0x0002) >> 0x02) << 0x02
-   reinterpret(Float14, uint14)
+   uint16y, ovf = add_with_overflow(uint16x, 0x0002)
+   ovf && return signbit(x) ? NegInf14 : PosInf14
+   uint14y = uint16y & ~0x0003
+   reinterpret(Float14, uint14y)
 end
+=#
 
 function Base.Float16(x::Float14)
    reinterpret(Float16, x)
