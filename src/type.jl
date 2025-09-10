@@ -32,7 +32,6 @@ function Base.Float16(x::Float14)
 end
 
 Base.show(io::IO, x::Float14) = show(io, MIME"text/plain"(), string("Float14(",reinterpret(Float16,x),")"))
-Base.show(io::IO, mimme, x::Float14) = show(io, mime(), string("Float14(",reinterpret(Float16,x),")"))
 
 const NaN15    = reinterpret(Float15, NaN16)
 const PosInf15 = reinterpret(Float15, Inf16)
