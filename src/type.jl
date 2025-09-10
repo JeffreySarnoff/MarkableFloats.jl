@@ -108,15 +108,15 @@ with_mark1(x::Float14) = reinterpret(Float15, (reinterpret(UInt16, x) | 0x0001))
 function Base.show(io::IO, x::Float14)
     mark = marking(x)
     value = Float16(unmark(x))
-    str = string("Float14(", value, "~", mark,")")
-    print(io, MIME"text/plain"(), str)
+    str = string("Float14(", value, ", ", mark,")")
+    print(io, str)
 end
 
 function Base.show(io::IO, x::Float15)
     mark = marking(x)
     value = Float16(unmark(x))
-    str = string("Float15(", value, "~", mark,")")
-    print(io, MIME"text/plain"(), str)
+    str = string("Float15(", value, ", ", mark,")")
+    print(io, str)
 end
 
 
